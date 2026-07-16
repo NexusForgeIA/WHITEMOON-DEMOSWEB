@@ -258,8 +258,12 @@ body.menu-open .overlay-links a:nth-child(5){animation-delay:.36s}
 .overlay-links a:hover{color:var(--p2)}
 .overlay-foot{position:absolute;bottom:clamp(28px,6vh,60px);left:clamp(24px,8vw,120px);color:var(--muted);font-size:.9rem;display:flex;gap:22px;flex-wrap:wrap}
 .overlay-foot a:hover{color:var(--g)}
+/* CTA dentro del overlay: sólo en móvil (≤900px), donde sale de la barra */
+.overlay-cta-wrap{display:none;position:relative;margin-top:clamp(18px,4vh,30px);opacity:0;transform:translateY(40px)}
+body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
 @media (prefers-reduced-motion:reduce){
   .overlay-links a{opacity:1;transform:none;animation:none!important}
+  .overlay-cta-wrap{opacity:1;transform:none;animation:none!important}
 }
 
 /* ============ HERO ============ */
@@ -382,7 +386,14 @@ body.menu-open .overlay-links a:nth-child(5){animation-delay:.36s}
 .grid-auto{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
 .flip{perspective:1400px;min-height:270px}
 .flip-inner{position:relative;width:100%;height:100%;min-height:270px;transition:transform .8s var(--ease);transform-style:preserve-3d}
-.flip:hover .flip-inner,.flip.flipped .flip-inner{transform:rotateY(180deg)}
+/* el giro por hover solo en punteros reales: en táctil (iOS) el :hover se
+   queda pegado tras el tap y la card no volvía al frente al segundo toque.
+   El tap-to-flip vive en JS bajo (hover:none), así que ambos caminos son
+   complementarios y no se solapan. */
+@media (hover:hover){
+  .flip:hover .flip-inner{transform:rotateY(180deg)}
+}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
 .flip-face{position:absolute;inset:0;border-radius:20px;padding:28px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--border);background:var(--card);display:flex;flex-direction:column;overflow:hidden}
 .flip-front{justify-content:space-between}
 .card-media{position:absolute;inset:0;z-index:0;overflow:hidden;border-radius:20px}
@@ -393,7 +404,10 @@ body.menu-open .overlay-links a:nth-child(5){animation-delay:.36s}
     linear-gradient(150deg,rgba(124,77,255,.62) 0%,rgba(124,77,255,.18) 42%,rgba(8,8,13,.25) 100%);}
 .flip-front::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(300px 160px at 100% 0%,rgba(124,77,255,.18),transparent 60%)}
 .flip-front .flip-ico,.flip-front .fc-text{position:relative;z-index:2}
-.flip-ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;border:1px solid rgba(124,77,255,.45);background:rgba(12,12,20,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+/* sin backdrop-filter: dentro de un preserve-3d aplana el contexto 3D
+   (Safari lo hace de forma agresiva) y backface-visibility deja de ocultar
+   la cara frontal, que se cuela en espejo. Compensado con fondo más opaco. */
+.flip-ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;border:1px solid rgba(124,77,255,.45);background:rgba(12,12,20,.72)}
 .flip-ico svg{width:26px;height:26px;color:var(--p2)}
 .flip-front h3{font-size:1.22rem;margin-top:auto;text-shadow:0 2px 14px rgba(0,0,0,.75)}
 .flip-front .hint{color:rgba(240,240,245,.8);font-size:.82rem;margin-top:.5rem;display:flex;align-items:center;gap:.4em;text-shadow:0 1px 8px rgba(0,0,0,.6)}
@@ -402,6 +416,10 @@ body.menu-open .overlay-links a:nth-child(5){animation-delay:.36s}
 .flip-back h4{font-size:1.05rem;margin-bottom:.5rem;color:var(--p2)}
 .flip-back p{color:var(--muted);font-size:.92rem;line-height:1.55}
 .flip-back .btn{margin-top:16px;align-self:flex-start;font-size:.86rem;padding:.7em 1.15em}
+/* will-change:transform sobre el ancestro aplana el contexto 3D en Safari
+   (y con él backface-visibility). Las flip-cards no lo necesitan: su giro
+   ya está compuesto en la GPU vía .flip-inner. */
+.flip[data-reveal]{will-change:auto}
 
 /* ============ HORIZONTAL SCROLL (Cómo trabajamos) ============ */
 #como{overflow:hidden}
@@ -557,6 +575,19 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
 /* ============ RESPONSIVE ============ */
 @media (max-width:900px){
   .nav-links{display:none}
+  /* el CTA sale de la barra: sólo logo + hamburguesa, sin solapes */
+  .nav-orion{display:none}
+  /* overlay proporcionado al viewport: enlaces legibles, sin scroll */
+  .overlay{padding:0 clamp(20px,6vw,40px)}
+  .overlay-links{gap:clamp(4px,1.2vh,10px);align-items:center;text-align:center}
+  .overlay-links a{font-size:clamp(1.3rem,5.2vw,1.6rem);width:auto;justify-content:center;gap:.5em;line-height:1.15}
+  .overlay-links a .num{font-size:.7rem;transform:none}
+  .overlay-cta-wrap{display:block;align-self:center}
+  .overlay-cta{width:100%;max-width:320px;justify-content:center}
+  /* apilado y centrado: no invade el FAB de Orion en ningún ancho */
+  .overlay-foot{left:0;right:0;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;font-size:.82rem;padding:0 20px}
+  /* el CTA destacado ya cubre Orion: fuera el duplicado (y su choque con el FAB) */
+  .overlay-foot [data-orion]{display:none}
   .card360-grid{grid-template-columns:1fr;gap:32px}
   .holo{max-width:330px;margin:0 auto}
   .grid-auto{grid-template-columns:repeat(2,1fr)}
@@ -599,7 +630,7 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
     <a href="#contacto">Contacto</a>
   </div>
   <div class="nav-cta">
-    <button class="btn btn-primary" data-orion>
+    <button class="btn btn-primary nav-orion" data-orion>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Habla con Orion
     </button>
@@ -619,6 +650,12 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
     <a href="#faq"><span class="num">05</span>FAQ</a>
     <a href="#contacto"><span class="num">06</span>Contacto</a>
   </nav>
+  <div class="overlay-cta-wrap">
+    <button class="btn btn-primary overlay-cta" data-orion>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Habla con Orion
+    </button>
+  </div>
   <div class="overlay-foot">
     <a href="mailto:comercial@whitemoon.es">comercial@whitemoon.es</a>
     <a href="#" data-orion>Habla con Orion</a>
@@ -1062,7 +1099,7 @@ function toggleMenu(open){
   menuBtn.setAttribute('aria-expanded',isOpen);
 }
 menuBtn.addEventListener('click',()=>toggleMenu());
-$$('#overlayLinks a').forEach(a=>a.addEventListener('click',()=>toggleMenu(false)));
+$$('#overlayLinks a, .overlay-cta, .overlay-foot [data-orion]').forEach(a=>a.addEventListener('click',()=>toggleMenu(false)));
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){toggleMenu(false);closeOrion();} });
 
 /* ---------- SCROLL-SPY ---------- */
