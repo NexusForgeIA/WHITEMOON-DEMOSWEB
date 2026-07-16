@@ -534,7 +534,18 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
 .contact-list li span{color:var(--muted);font-size:.8rem;display:block}
 .contact-list li a,.contact-list li b{font-weight:600;font-size:1rem}
 .contact-list li a:hover{color:var(--g)}
-.foot-bottom{border-top:1px solid var(--border);margin-top:60px;padding:26px 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;color:var(--muted);font-size:.84rem}
+.foot-bottom{border-top:1px solid var(--border);margin-top:60px;padding:26px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;color:var(--muted);font-size:.84rem}
+/* redes: mismo lenguaje que los chips .mk de la tarjeta de contacto */
+.foot-social{display:flex;align-items:center;gap:10px;list-style:none;margin:0;padding:0}
+.foot-social a{
+  width:40px;height:40px;border-radius:11px;display:grid;place-items:center;flex:none;
+  border:1px solid var(--border);color:var(--muted);
+  transition:color .3s var(--ease),border-color .3s var(--ease),background .3s var(--ease),transform .3s var(--ease);
+}
+.foot-social a:hover{color:var(--p2);border-color:var(--p);background:rgba(124,77,255,.09);transform:translateY(-2px)}
+.foot-social a:focus-visible{color:var(--p2);border-color:var(--p);outline:2px solid var(--p2);outline-offset:2px}
+.foot-social svg{width:22px;height:22px;display:block}
+@media (prefers-reduced-motion:reduce){.foot-social a:hover{transform:none}}
 
 /* ============ REVEAL ============ */
 [data-reveal]{will-change:transform,opacity}
@@ -636,7 +647,9 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
   .grid-plans{grid-template-columns:1fr}
   .hero-cta{flex-direction:column;align-items:stretch}
   .hero-cta .btn{justify-content:center}
-  .foot-bottom{flex-direction:column}
+  /* apilado y centrado; las redes van al final con aire, sin amontonarse */
+  .foot-bottom{flex-direction:column;align-items:center;text-align:center;gap:16px}
+  .foot-social{gap:14px;margin-top:2px}
   .orion-fab{right:16px;bottom:16px}
   .orion-win{right:8px;bottom:88px}
 }
@@ -936,6 +949,25 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
     <div class="foot-bottom">
       <span>© <span id="yr"></span> WhiteMoon Agencia IA · Automatización con IA para empresas</span>
       <span>Majadahonda, Madrid · Sin permanencia</span>
+      <ul class="foot-social">
+        <li>
+          <a href="https://www.instagram.com/whitemoon_agencia_ia" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true" focusable="false">
+              <rect x="3" y="3" width="18" height="18" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M17.5 6.5h.01" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.tiktok.com/@whitemoon_ia" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true" focusable="false">
+              <path d="M14 3v11.5a4.5 4.5 0 1 1-4.5-4.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14 3.2c.5 3 2.7 5.2 5.7 5.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </footer>
