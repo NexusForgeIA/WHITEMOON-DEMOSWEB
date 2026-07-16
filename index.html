@@ -593,10 +593,26 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
 .porque-list li span{color:var(--muted);font-size:.92rem}
 
 /* ============ PLANES ============ */
-.grid-plans{display:grid;grid-template-columns:1fr 1.22fr 1fr;gap:22px;align-items:start}
-.plan{border-radius:22px;padding:32px 28px;border:1px solid var(--border);background:var(--card);display:flex;flex-direction:column;position:relative;transition:transform .4s var(--ease),border-color .4s}
+/* la columna ancha va al FINAL: los planes van en orden ascendente de precio y
+   la destacada (WhiteMoon 360) cierra. minmax(0,..) para que ningun minimo auto
+   desborde. align-items:stretch (por defecto) iguala la altura de las 3. */
+.grid-plans{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.22fr);gap:22px}
+.plan{border-radius:22px;border:1px solid var(--border);background:var(--card);display:flex;flex-direction:column;position:relative;transition:transform .4s var(--ease),border-color .4s}
+/* cabecera con foto: duotono purpura para integrarla en el dark */
+.plan-media{position:relative;margin:0;aspect-ratio:16/9;overflow:hidden;flex:none;border-radius:21px 21px 0 0}
+.plan-media img{width:100%;height:100%;object-fit:cover;display:block}
+.plan-media::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(150deg,rgba(124,77,255,.52) 0%,rgba(124,77,255,.14) 55%,rgba(0,212,170,.10) 100%),
+    linear-gradient(0deg,var(--card) 0%,rgba(8,8,13,.10) 70%);
+}
+/* flex:1 -> el CTA queda abajo del todo en las tres por igual */
+.plan-body{padding:26px 28px 32px;display:flex;flex-direction:column;flex:1}
+/* mismo padding-bottom que las otras dos: si no, su CTA queda 2px desalineado */
+.plan.feat .plan-body{padding:30px 32px 32px}
 .plan:hover{transform:translateY(-6px);border-color:var(--p)}
-.plan.feat{background:linear-gradient(165deg,rgba(124,77,255,.18),var(--card) 60%);border-color:var(--p);box-shadow:0 34px 90px -42px rgba(124,77,255,.8),0 0 0 1px rgba(124,77,255,.35);padding:40px 32px 34px}
+.plan.feat{background:linear-gradient(165deg,rgba(124,77,255,.18),var(--card) 60%);border-color:var(--p);box-shadow:0 34px 90px -42px rgba(124,77,255,.8),0 0 0 1px rgba(124,77,255,.35)}
 .plan.feat::before{content:'';position:absolute;inset:0;border-radius:22px;pointer-events:none;background:radial-gradient(360px 210px at 50% -6%,rgba(124,77,255,.24),transparent 66%)}
 .plan>*{position:relative}
 .plan .tag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#fff;background:linear-gradient(120deg,var(--p),var(--p2));padding:.42em 1em;border-radius:100px;box-shadow:0 10px 24px -8px rgba(124,77,255,.9)}
@@ -1232,13 +1248,41 @@ const PORQUE = [
 ];
 const PLANS = [
   {
-    service:'auditoria', name:'Auditoría IA', price:'899€', unit:'pago único',
-    items:['Análisis completo de tu empresa','Mapa de procesos a automatizar','Prioridades y plan de acción'],
+    service:'gmb', name:'Automatización GMB', price:'299€', unit:'setup', photo:'gmb',
+    alt:'Mapa de carreteras: tu negocio visible en el mapa local',
+    desc:'Tu ficha de Google es tu escaparate en el mapa: quien busca tu servicio en tu zona te encuentra ahí primero. La mantenemos viva y optimizada para que subas posiciones.',
+    items:[
+      'Optimización completa de la ficha (categorías, servicios, zona y fotos)',
+      'Publicaciones automáticas cada semana (novedades y ofertas)',
+      'Solicitud automática de reseñas a tus clientes + respuesta a las que llegan',
+      'Datos siempre al día: horario, teléfono, web y servicios',
+      'Preguntas y respuestas (Q&A) gestionadas',
+      'Fotos y novedades cargadas cada mes, sin que tengas que acordarte',
+      'Seguimiento de las búsquedas por las que apareces y de las llamadas que entran',
+      'Informe mensual de visibilidad y posición local'
+    ],
+    foot:'Operativo en 72 h · Sin permanencia',
+    cta:'Lo quiero'
+  },
+  {
+    service:'auditoria', name:'Auditoría IA', price:'899€', unit:'pago único', photo:'auditoria',
+    alt:'Gráfica de resultados en ascenso sobre papel junto a una regla y un bolígrafo',
+    desc:'Antes de automatizar nada, miramos tu empresa por dentro: dónde se va el tiempo, qué se repite y qué cuesta dinero. Sales con un plan claro y priorizado, aunque luego no trabajes con nosotros.',
+    items:[
+      'Análisis completo de tu empresa y de cómo trabajáis hoy',
+      'Entrevistas con tu equipo para detectar los cuellos de botella reales',
+      'Mapa de procesos automatizables, de mayor a menor impacto',
+      'Estimación de horas y coste que recuperas con cada automatización',
+      'Prioridades y plan de acción por fases, con plazos',
+      'Informe final por escrito y sesión de presentación con el equipo'
+    ],
+    foot:'Entrega en 7 días · El importe se descuenta si contratas',
     cta:'Lo quiero'
   },
   {
     service:'wm360', name:'WhiteMoon 360', subtitle:'Web + Agente IA + Gestión',
     feat:true, tag:'Popular', price:'1.899€', unit:'setup · +199€/mes', note:'Sin permanencia',
+    photo:'wm360', alt:'Placa de circuito iluminada: tu negocio entero en un solo sistema',
     desc:'Tu negocio entero en un sistema: la web capta el aviso o la cita, el agente IA de chat lo clasifica, tu equipo lo recibe en su WhatsApp y tú lo gestionas todo desde tu propio panel.',
     items:[
       'Web profesional completa + dominio primer año',
@@ -1253,19 +1297,6 @@ const PLANS = [
     ],
     foot:'Operativo en 7 días · Sin permanencia',
     cta:'Quiero WhiteMoon 360'
-  },
-  {
-    service:'gmb', name:'Automatización GMB', price:'299€', unit:'setup',
-    desc:'Tu ficha de Google es tu escaparate en el mapa: quien busca tu servicio en tu zona te encuentra ahí primero. La mantenemos viva y optimizada para que subas posiciones.',
-    items:[
-      'Optimización completa de la ficha (categorías, servicios, zona y fotos)',
-      'Publicaciones automáticas cada semana (novedades y ofertas)',
-      'Solicitud automática de reseñas a tus clientes + respuesta a las que llegan',
-      'Datos siempre al día: horario, teléfono, web y servicios',
-      'Preguntas y respuestas (Q&A) gestionadas',
-      'Informe mensual de visibilidad y posición local'
-    ],
-    cta:'Lo quiero'
   }
 ];
 const MARQUEE_WORDS = ['Atención 24/7','Captación','Reservas','RAG','CRM','WhatsApp','SEO · GEO · AEO','Agentes IA','Ficha Google','Procesos internos','Sin permanencia','Hecho a medida'];
@@ -1374,14 +1405,19 @@ const BRANDS = [
   $('#plansGrid').innerHTML = PLANS.map(p=>`
     <div class="plan ${p.feat?'feat':''}" data-reveal>
       ${p.tag?`<span class="tag">${p.tag}</span>`:''}
-      <h3>${p.name}</h3>
-      ${p.subtitle?`<div class="plan-sub">${p.subtitle}</div>`:''}
-      <div class="price">${p.price}</div>
-      <div class="once">${p.unit}${p.note?` · <span class="noperm">${p.note}</span>`:''}</div>
-      ${p.desc?`<p class="plan-desc">${p.desc}</p>`:''}
-      <ul>${p.items.map(i=>`<li>${ICON.check}${i}</li>`).join('')}</ul>
-      ${p.foot?`<div class="plan-foot">${p.foot}</div>`:''}
-      <button class="btn ${p.feat?'btn-primary':'btn-ghost'}" data-orion data-service="${p.service}">${p.cta} ${ICON.arrow}</button>
+      <figure class="plan-media">
+        <img src="assets/plan-${p.photo}.webp" alt="${p.alt}" width="800" height="450" loading="lazy" decoding="async">
+      </figure>
+      <div class="plan-body">
+        <h3>${p.name}</h3>
+        ${p.subtitle?`<div class="plan-sub">${p.subtitle}</div>`:''}
+        <div class="price">${p.price}</div>
+        <div class="once">${p.unit}${p.note?` · <span class="noperm">${p.note}</span>`:''}</div>
+        ${p.desc?`<p class="plan-desc">${p.desc}</p>`:''}
+        <ul>${p.items.map(i=>`<li>${ICON.check}${i}</li>`).join('')}</ul>
+        ${p.foot?`<div class="plan-foot">${p.foot}</div>`:''}
+        <button class="btn ${p.feat?'btn-primary':'btn-ghost'}" data-orion data-service="${p.service}">${p.cta} ${ICON.arrow}</button>
+      </div>
     </div>`).join('');
 })();
 
