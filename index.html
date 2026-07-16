@@ -294,10 +294,18 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
   background:linear-gradient(90deg,rgba(8,8,13,.92) 0%,rgba(8,8,13,.72) 42%,rgba(8,8,13,.28) 70%,transparent 100%),
   linear-gradient(0deg,var(--bg) 2%,transparent 30%)}
 .hero-inner{position:relative;z-index:2;max-width:760px}
+/* el minimo baja de 2.6rem a 2rem: a <=457px el titular se plantaba en 41.6px
+   y no cabia. Solo cambia el minimo, asi que el tramo 7vw (>=457px) y el maximo
+   de desktop quedan intactos. 2rem es el mayor tamano al que "Automatizamos"
+   entra a 320px incluso engordada a 'wght' 800 por el hover (258.8 de 265px). */
 .hero h1{
-  font-size:clamp(2.6rem,7vw,5.4rem);font-weight:300;letter-spacing:-.03em;margin:.6rem 0;
+  font-size:clamp(2rem,7vw,5.4rem);font-weight:300;letter-spacing:-.03em;margin:.6rem 0;
   font-variation-settings:'wght' 300;
 }
+/* cada letra es un inline-block, asi que sin agrupar por palabras el navegador
+   corta entre letras cualesquiera ("Automatizamo/s"). La palabra es la unidad
+   irrompible; los saltos ocurren en los espacios reales que van entre ellas. */
+.hero h1 .word{display:inline-block;white-space:nowrap}
 .hero h1 .ch{display:inline-block;font-variation-settings:'wght' 300;transition:none;white-space:pre}
 .rotator{font-size:clamp(2rem,6vw,4.2rem);font-weight:700;letter-spacing:-.03em;line-height:1.5;margin-bottom:.5rem;height:1.5em;overflow:hidden;display:flex;align-items:center;gap:.35em}
 .rotator .pre{color:var(--muted);font-weight:300}
@@ -1237,7 +1245,13 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'){toggleMenu(false);
 /* ---------- HERO: bold-on-hover H1 ---------- */
 (function(){
   const el=$('#heroTitle'); const text=el.dataset.text;
-  el.innerHTML = [...text].map(c=>`<span class="ch">${c===' '?'&nbsp;':c}</span>`).join('');
+  // Se agrupa por palabras y se unen con espacios REALES: antes cada letra era
+  // un <span> suelto y los espacios iban como &nbsp;, de modo que el unico sitio
+  // donde el navegador NO podia cortar era el espacio -> partia las palabras.
+  // El orden de los .ch no cambia, asi que el cascade del hover sigue igual.
+  el.innerHTML = text.split(' ').map(word=>
+    `<span class="word">${[...word].map(c=>`<span class="ch">${c}</span>`).join('')}</span>`
+  ).join(' ');
   const letters=$$('.ch',el);
   letters.forEach(l=>{l.__w={v:300};});
   function setW(l){ l.style.fontVariationSettings=`'wght' ${Math.round(l.__w.v)}`; }
