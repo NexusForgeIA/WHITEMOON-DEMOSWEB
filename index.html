@@ -258,8 +258,12 @@ body.menu-open .overlay-links a:nth-child(5){animation-delay:.36s}
 .overlay-links a:hover{color:var(--p2)}
 .overlay-foot{position:absolute;bottom:clamp(28px,6vh,60px);left:clamp(24px,8vw,120px);color:var(--muted);font-size:.9rem;display:flex;gap:22px;flex-wrap:wrap}
 .overlay-foot a:hover{color:var(--g)}
+/* CTA dentro del overlay: sólo en móvil (≤900px), donde sale de la barra */
+.overlay-cta-wrap{display:none;position:relative;margin-top:clamp(18px,4vh,30px);opacity:0;transform:translateY(40px)}
+body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
 @media (prefers-reduced-motion:reduce){
   .overlay-links a{opacity:1;transform:none;animation:none!important}
+  .overlay-cta-wrap{opacity:1;transform:none;animation:none!important}
 }
 
 /* ============ HERO ============ */
@@ -557,6 +561,19 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
 /* ============ RESPONSIVE ============ */
 @media (max-width:900px){
   .nav-links{display:none}
+  /* el CTA sale de la barra: sólo logo + hamburguesa, sin solapes */
+  .nav-orion{display:none}
+  /* overlay proporcionado al viewport: enlaces legibles, sin scroll */
+  .overlay{padding:0 clamp(20px,6vw,40px)}
+  .overlay-links{gap:clamp(4px,1.2vh,10px);align-items:center;text-align:center}
+  .overlay-links a{font-size:clamp(1.3rem,5.2vw,1.6rem);width:auto;justify-content:center;gap:.5em;line-height:1.15}
+  .overlay-links a .num{font-size:.7rem;transform:none}
+  .overlay-cta-wrap{display:block;align-self:center}
+  .overlay-cta{width:100%;max-width:320px;justify-content:center}
+  /* apilado y centrado: no invade el FAB de Orion en ningún ancho */
+  .overlay-foot{left:0;right:0;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:6px;font-size:.82rem;padding:0 20px}
+  /* el CTA destacado ya cubre Orion: fuera el duplicado (y su choque con el FAB) */
+  .overlay-foot [data-orion]{display:none}
   .card360-grid{grid-template-columns:1fr;gap:32px}
   .holo{max-width:330px;margin:0 auto}
   .grid-auto{grid-template-columns:repeat(2,1fr)}
@@ -599,7 +616,7 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
     <a href="#contacto">Contacto</a>
   </div>
   <div class="nav-cta">
-    <button class="btn btn-primary" data-orion>
+    <button class="btn btn-primary nav-orion" data-orion>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Habla con Orion
     </button>
@@ -619,6 +636,12 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
     <a href="#faq"><span class="num">05</span>FAQ</a>
     <a href="#contacto"><span class="num">06</span>Contacto</a>
   </nav>
+  <div class="overlay-cta-wrap">
+    <button class="btn btn-primary overlay-cta" data-orion>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Habla con Orion
+    </button>
+  </div>
   <div class="overlay-foot">
     <a href="mailto:comercial@whitemoon.es">comercial@whitemoon.es</a>
     <a href="#" data-orion>Habla con Orion</a>
@@ -1062,7 +1085,7 @@ function toggleMenu(open){
   menuBtn.setAttribute('aria-expanded',isOpen);
 }
 menuBtn.addEventListener('click',()=>toggleMenu());
-$$('#overlayLinks a').forEach(a=>a.addEventListener('click',()=>toggleMenu(false)));
+$$('#overlayLinks a, .overlay-cta, .overlay-foot [data-orion]').forEach(a=>a.addEventListener('click',()=>toggleMenu(false)));
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){toggleMenu(false);closeOrion();} });
 
 /* ---------- SCROLL-SPY ---------- */
