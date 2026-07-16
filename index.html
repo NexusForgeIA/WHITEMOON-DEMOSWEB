@@ -89,7 +89,7 @@
         "name": "Automatizaciones con IA",
         "itemListElement": [
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "WhiteMoon 360 — automatización integral", "description": "Web, agente de IA de chat y CRM con IA en un único sistema conectado." } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Auditoría GEO IA", "description": "Análisis de tu empresa para priorizar qué procesos automatizar primero." } },
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Auditoría GEO IA", "description": "Descubre si tu negocio aparece en ChatGPT, Grok y Perplexity. Informe PDF profesional en 48h listo para tu programador." } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Automatización de ficha Google Business (GMB)", "description": "Ficha de Google optimizada y al día: reseñas, publicaciones y SEO local." } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Automatización de procesos de empresa", "description": "Tareas, avisos, documentos y flujos repetitivos que se ejecutan solos." } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Gestión de procesos internos", "description": "Incidencias, seguimiento, reporting y coordinación de equipo automatizados." } },
@@ -619,6 +619,13 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
 .plan h3{font-size:1.4rem;margin-bottom:.15rem}
 .plan.feat h3{font-size:1.75rem}
 .plan .plan-sub{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--g);font-weight:600;margin-bottom:.55rem}
+/* etiqueta superior, encima del titulo. En purpura y no en verde para no
+   confundirla con .plan-sub, y sin usar .tag: esa pastilla es la de "Popular"
+   de la destacada y perderia su peso si la llevara otra card. */
+.plan .plan-eyebrow{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--p2);font-weight:700;margin-bottom:.5rem}
+/* subtexto bajo el precio: el margen negativo compensa el margin-bottom de
+   .once, para que quede pegado al precio y no flotando */
+.plan .plan-note{color:var(--muted);font-size:.82rem;margin:-.72rem 0 1rem}
 .plan .price{font-size:2.1rem;font-weight:700;margin:.5rem 0 .1rem;letter-spacing:-.02em}
 .plan.feat .price{font-size:2.5rem}
 .plan .once{color:var(--muted);font-size:.86rem;margin-bottom:1rem}
@@ -1265,18 +1272,20 @@ const PLANS = [
     cta:'Lo quiero'
   },
   {
-    service:'auditoria', name:'Auditoría GEO IA', price:'899€', unit:'pago único', photo:'auditoria',
+    service:'auditoria', name:'Auditoría GEO IA', eyebrow:'VISIBILIDAD EN IA',
+    price:'899€', unit:'pago único', subnote:'Entrega en 48h · Sin permanencia',
+    photo:'auditoria',
     alt:'Gráfica de resultados en ascenso sobre papel junto a una regla y un bolígrafo',
-    desc:'Antes de automatizar nada, miramos tu empresa por dentro: dónde se va el tiempo, qué se repite y qué cuesta dinero. Sales con un plan claro y priorizado, aunque luego no trabajes con nosotros.',
+    desc:'Descubre si tu negocio aparece en ChatGPT, Grok y Perplexity. Informe PDF profesional en 48h listo para tu programador.',
     items:[
-      'Análisis completo de tu empresa y de cómo trabajáis hoy',
-      'Entrevistas con tu equipo para detectar los cuellos de botella reales',
-      'Mapa de procesos automatizables, de mayor a menor impacto',
-      'Estimación de horas y coste que recuperas con cada automatización',
-      'Prioridades y plan de acción por fases, con plazos',
-      'Informe final por escrito y sesión de presentación con el equipo'
+      'Análisis completo SEO/GEO/AEO (35 checks)',
+      'Puntuación 0-100 con nivel de visibilidad en IA',
+      'Gráficas visuales de ROI y puntuación por área',
+      'Errores críticos en lenguaje de negocio',
+      'Plan de acción priorizado con impacto estimado',
+      'Queries exactas para verificar en ChatGPT y Grok'
     ],
-    foot:'Entrega en 7 días · El importe se descuenta si contratas',
+    foot:'Informe PDF profesional · Entrega en 48h',
     cta:'Lo quiero'
   },
   {
@@ -1409,10 +1418,12 @@ const BRANDS = [
         <img src="assets/plan-${p.photo}.webp" alt="${p.alt}" width="800" height="450" loading="lazy" decoding="async">
       </figure>
       <div class="plan-body">
+        ${p.eyebrow?`<div class="plan-eyebrow">${p.eyebrow}</div>`:''}
         <h3>${p.name}</h3>
         ${p.subtitle?`<div class="plan-sub">${p.subtitle}</div>`:''}
         <div class="price">${p.price}</div>
         <div class="once">${p.unit}${p.note?` · <span class="noperm">${p.note}</span>`:''}</div>
+        ${p.subnote?`<div class="plan-note">${p.subnote}</div>`:''}
         ${p.desc?`<p class="plan-desc">${p.desc}</p>`:''}
         <ul>${p.items.map(i=>`<li>${ICON.check}${i}</li>`).join('')}</ul>
         ${p.foot?`<div class="plan-foot">${p.foot}</div>`:''}
