@@ -462,6 +462,44 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
    ya está compuesto en la GPU vía .flip-inner. */
 .flip[data-reveal]{will-change:auto}
 
+/* ============ MANIFIESTO / FILOSOFÍA ============ */
+.manifesto{margin-top:clamp(18px,3vw,34px)}
+.mf-item{padding:clamp(26px,3.6vw,44px) 0;border-top:1px solid var(--border)}
+.mf-item:last-of-type{border-bottom:1px solid var(--border)}
+.mf-claim{font-size:clamp(1.55rem,3.9vw,2.7rem);line-height:1.14;letter-spacing:-.02em;margin:0 0 .85rem}
+/* dos tiempos: primero la negacion en muted y ligera, luego la afirmacion */
+.mf-t1{display:block;color:var(--muted);font-weight:300}
+.mf-t2{display:block;color:var(--text);font-weight:700}
+/* la palabra clave: acento + glow, y un subrayado que se dibuja al entrar.
+   nowrap para que no se parta y el subrayado quede continuo. */
+.mf-key{font-style:normal;position:relative;white-space:nowrap;color:var(--p2);text-shadow:0 0 30px rgba(124,77,255,.45)}
+.mf-key.is-g{color:var(--g);text-shadow:0 0 30px rgba(0,212,170,.4)}
+.mf-key::after{
+  content:'';position:absolute;left:0;right:0;bottom:-.1em;height:3px;border-radius:3px;
+  background:linear-gradient(90deg,var(--p),var(--g));transform-origin:left;
+}
+/* por defecto visible: si no hay JS/GSAP o hay reduced-motion, el subrayado
+   se ve igual. Solo cuando el JS toma el control (.js-mf) se dibuja. */
+.js-mf .mf-key::after{transform:scaleX(0);transition:transform .75s var(--ease) .2s}
+.js-mf .mf-item.in .mf-key::after{transform:scaleX(1)}
+.mf-note{color:var(--muted);font-size:clamp(1rem,1.7vw,1.12rem);line-height:1.6;max-width:62ch;margin:0}
+/* cierre: mas grande, centrado y con un glow suave detras */
+.mf-close{position:relative;text-align:center;margin-top:clamp(46px,6.5vw,78px)}
+.mf-close::before{
+  content:'';position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);
+  width:min(720px,94%);height:min(260px,70%);pointer-events:none;z-index:0;
+  background:radial-gradient(closest-side,rgba(124,77,255,.20),transparent 72%);
+}
+.mf-close-line{
+  position:relative;z-index:1;font-size:clamp(1.35rem,3.2vw,2.35rem);font-weight:700;
+  line-height:1.22;letter-spacing:-.02em;max-width:24ch;margin:0 auto 1.7rem;
+}
+.mf-cta{position:relative;z-index:1}
+@media (max-width:600px){
+  .mf-claim{margin-bottom:.7rem}
+  .mf-close-line{max-width:18ch}
+}
+
 /* ============ HORIZONTAL SCROLL (Cómo trabajamos) ============ */
 #como{overflow:hidden}
 .h-outer{position:relative}
@@ -840,6 +878,50 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
       <p class="sec-lead">Pasa el ratón (o toca en móvil) sobre cada tarjeta para ver cómo funciona y cómo se aplica a tu negocio.</p>
     </div>
     <div class="grid-auto" id="autoGrid"></div>
+  </div>
+</section>
+
+<!-- ============ MANIFIESTO / FILOSOFÍA ============ -->
+<section id="filosofia" class="block">
+  <div class="wrap">
+    <div class="head-row" data-reveal>
+      <span class="eyebrow">Nuestra filosofía</span>
+      <h2 class="sec-title">No vendemos productos.<br><span class="grad-text">Vendemos resultados.</span></h2>
+    </div>
+
+    <div class="manifesto">
+      <article class="mf-item" data-reveal>
+        <p class="mf-claim">
+          <span class="mf-t1">Las empresas no compran productos.</span>
+          <span class="mf-t2">Compran <em class="mf-key">resultados</em>.</span>
+        </p>
+        <p class="mf-note">Por eso no te entregamos una herramienta, sino resultados: más clientes atendidos, más citas cerradas y horas que recuperas.</p>
+      </article>
+
+      <article class="mf-item" data-reveal>
+        <p class="mf-claim">
+          <span class="mf-t1">No compran servicios.</span>
+          <span class="mf-t2">Compran <em class="mf-key is-g">soluciones</em>.</span>
+        </p>
+        <p class="mf-note">No te vendemos un chatbot; resolvemos el problema real: que ningún cliente se quede sin respuesta, ni de día ni de noche.</p>
+      </article>
+
+      <article class="mf-item" data-reveal>
+        <p class="mf-claim">
+          <span class="mf-t1">No compran características.</span>
+          <span class="mf-t2">Compran <em class="mf-key">transformación</em>.</span>
+        </p>
+        <p class="mf-note">No te listamos funciones; transformamos cómo trabaja tu empresa: la IA hace lo repetitivo y tu equipo, lo que de verdad suma.</p>
+      </article>
+    </div>
+
+    <div class="mf-close" data-reveal>
+      <p class="mf-close-line">En WhiteMoon vendemos <span class="grad-text">soluciones</span>, generamos <span class="grad-text">riqueza</span> y solucionamos <span class="grad-text">tu dolor</span>.</p>
+      <button class="btn btn-primary mf-cta" data-orion>
+        Cuéntanos tu caso
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
   </div>
 </section>
 
@@ -1331,6 +1413,17 @@ if(!REDUCED && window.gsap){
   $$('[data-reveal]').forEach(el=>{
     gsap.from(el,{y:44,opacity:0,duration:.9,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 86%'}});
   });
+
+  // manifiesto: el subrayado de la palabra clave se dibuja al entrar el bloque.
+  // Solo aqui dentro se marca .js-mf, asi que con reduced-motion o sin GSAP el
+  // subrayado se queda visible por defecto en vez de desaparecer.
+  const mfItems = $$('#filosofia .mf-item');
+  if(mfItems.length){
+    document.documentElement.classList.add('js-mf');
+    mfItems.forEach(el=>{
+      ScrollTrigger.create({trigger:el,start:'top 80%',once:true,onEnter:()=>el.classList.add('in')});
+    });
+  }
 
   // parallax giant numbers
   $$('[data-parallax]').forEach(el=>{
