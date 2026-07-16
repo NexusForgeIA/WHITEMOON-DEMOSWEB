@@ -97,7 +97,10 @@
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Captación de leads automática", "description": "Cada contacto entra en tu CRM y te llega al WhatsApp en segundos." } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Base de conocimiento IA (RAG)", "description": "El agente responde con tus documentos, precios y procesos reales." } },
           { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Visibilidad en IA y buscadores (SEO/GEO/AEO)", "description": "Aparecer y ser recomendado en ChatGPT, Perplexity, Google AI y Grok." } },
-          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Integraciones y flujos a medida", "description": "Conectamos tus herramientas y automatizamos lo que te hace perder tiempo." } }
+          { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Integraciones y flujos a medida", "description": "Conectamos tus herramientas y automatizamos lo que te hace perder tiempo." } },
+          { "@type": "Offer", "name": "Basic Esencial", "price": "2499", "priceCurrency": "EUR", "description": "Autónomos y negocios locales que quieren automatizar un solo proceso — clínicas y consultas individuales, peluquerías y estética, talleres, gestorías pequeñas, abogados y psicólogos, tiendas locales.", "itemOffered": { "@type": "Service", "name": "Basic Esencial", "description": "1 automatización a elegir, integración con 1 canal, avisos a WhatsApp y panel de control. Hasta 500 operaciones/mes. 2.499 € de setup + 199 €/mes, sin permanencia." } },
+          { "@type": "Offer", "name": "Pro Esencial", "price": "5999", "priceCurrency": "EUR", "description": "Pymes con equipo comercial y varios procesos que automatizar — reformas, inmobiliarias, energía solar, asesorías medianas, concesionarios, seguros, clínicas con varias sedes.", "itemOffered": { "@type": "Service", "name": "Pro Esencial", "description": "Hasta 3 automatizaciones combinadas, CRM + WhatsApp + email, scoring de leads con IA, seguimiento automático y panel de ROI. Hasta 2.000 operaciones/mes. 5.999 € de setup + 349 €/mes, sin permanencia." } },
+          { "@type": "Offer", "name": "Enterprise Esencial", "price": "11999", "priceCurrency": "EUR", "description": "Empresas con sistemas propios y gran volumen — constructoras, logística y distribución, franquicias y multi-sede, industria, grandes despachos.", "itemOffered": { "@type": "Service", "name": "Enterprise Esencial", "description": "Automatizaciones ilimitadas y flujos a medida, integración con tu ERP vía API, agente IA con tus documentos (RAG) y consultor asignado con SLA. Desde 11.999 € + 599 €/mes, a presupuesto." } }
         ]
       }
     },
@@ -640,6 +643,67 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
 .no-perm{text-align:center;color:var(--muted);font-size:.9rem;margin-top:26px;display:flex;align-items:center;justify-content:center;gap:.5em}
 .no-perm svg{width:16px;height:16px;color:var(--g)}
 
+/* ============ PLANES DE AUTOMATIZACIÓN (cards acordeón) ============ */
+/* la destacada va en el centro: aqui el orden ya es ascendente por precio y
+   Pro cae en medio, asi que columna ancha centrada. minmax(0,..) para que
+   ningun minimo auto desborde. */
+.grid-apl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.18fr) minmax(0,1fr);gap:22px;align-items:stretch}
+.apl{
+  display:flex;flex-direction:column;border-radius:22px;position:relative;
+  border:1px solid var(--border);background:var(--card);
+  transition:border-color .3s var(--ease),transform .4s var(--ease);
+}
+.apl.feat{background:linear-gradient(165deg,rgba(124,77,255,.18),var(--card) 60%);border-color:var(--p);box-shadow:0 34px 90px -42px rgba(124,77,255,.8),0 0 0 1px rgba(124,77,255,.35)}
+.apl.open{border-color:var(--p)}
+@media (hover:hover){.apl:hover{border-color:rgba(124,77,255,.5);transform:translateY(-4px)}}
+.apl .tag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);z-index:3;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:#fff;background:linear-gradient(120deg,var(--p),var(--p2));padding:.42em 1em;border-radius:100px;box-shadow:0 10px 24px -8px rgba(124,77,255,.9)}
+/* la cabecera es el boton: flex:1 la estira y deja el CTA abajo alineado */
+.apl-head{all:unset;box-sizing:border-box;display:flex;flex-direction:column;cursor:pointer;width:100%;flex:1}
+.apl-head:focus-visible{outline:2px solid var(--p2);outline-offset:-3px;border-radius:22px}
+.apl-media{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;flex:none;border-radius:21px 21px 0 0}
+.apl-media img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(1);transition:filter .3s var(--ease),transform .3s var(--ease)}
+.apl-media::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(150deg,rgba(124,77,255,.56) 0%,rgba(124,77,255,.16) 55%,rgba(0,212,170,.10) 100%),
+    linear-gradient(0deg,var(--card) 0%,rgba(8,8,13,.08) 66%);
+}
+@media (hover:hover){.apl:hover .apl-media img,.apl.open .apl-media img{filter:grayscale(0);transform:scale(1.05)}}
+.apl.open .apl-media img{filter:grayscale(0)}
+.apl-body{display:flex;flex-direction:column;flex:1;padding:22px 26px 18px}
+.apl-eyebrow{font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--p2);font-weight:700;margin-bottom:.5rem}
+.apl-price{font-size:1.95rem;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.apl.feat .apl-price{font-size:2.2rem}
+.apl-unit{color:var(--muted);font-size:.84rem;margin-top:.18rem}
+.apl-note{color:var(--g);font-size:.8rem;font-weight:600;margin-top:.3rem}
+.apl-ideal{color:var(--muted);font-size:.86rem;line-height:1.55;margin-top:.9rem}
+.apl-ideal b{color:var(--text);font-weight:600}
+.apl-hint{margin-top:auto;padding-top:1rem;display:inline-flex;align-items:center;gap:.4em;color:var(--muted);font-size:.8rem;font-weight:500}
+.apl-hint svg{width:14px;height:14px;color:var(--g);transition:transform .3s var(--ease)}
+.apl.open .apl-hint svg{transform:rotate(180deg)}
+/* panel: 0fr -> 1fr anima la altura sin medir en JS */
+.apl-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .38s var(--ease)}
+.apl.open .apl-panel{grid-template-rows:1fr}
+.apl-panel-in{overflow:hidden;min-height:0}
+.apl-panel-c{padding:0 26px}
+.apl-panel-c ul{list-style:none;display:flex;flex-direction:column;gap:.6em;padding-top:1rem;border-top:1px solid var(--border)}
+.apl-panel-c li{display:flex;gap:.6em;align-items:flex-start;color:var(--text);font-size:.88rem;opacity:.9}
+.apl-panel-c li svg{width:16px;height:16px;color:var(--g);flex:0 0 16px;margin-top:.2em}
+/* "Todo lo de Basic, y ademas:" no es una caracteristica: sin check y resaltado */
+.apl-panel-c li.li-head{color:var(--p2);font-weight:600;opacity:1}
+.apl-panel-c li.li-head svg{display:none}
+.apl-foot{padding:18px 26px 22px}
+.apl-foot .btn{width:100%;justify-content:center}
+@media (prefers-reduced-motion:reduce){
+  .apl-panel{transition:none}
+  .apl-media img{transition:none}
+  .apl-hint svg{transition:none}
+  .apl:hover{transform:none}
+}
+@media (max-width:900px){
+  .grid-apl{grid-template-columns:minmax(0,1fr);gap:26px;max-width:520px;margin:0 auto}
+}
+
 /* ============ FAQ ============ */
 .faq-list{max-width:820px}
 .faq-item{border:1px solid var(--border);border-radius:16px;background:var(--card);margin-bottom:12px;overflow:hidden;transition:border-color .3s,background .3s}
@@ -1078,6 +1142,22 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
   </div>
 </section>
 
+<!-- ============ PLANES DE AUTOMATIZACIÓN ============ -->
+<section id="planes-automatizacion" class="block">
+  <div class="wrap">
+    <div class="head-row" data-reveal>
+      <span class="eyebrow">Planes de Automatización</span>
+      <h2 class="sec-title">Automatiza a <span class="grad-text">tu escala</span></h2>
+      <p class="sec-lead">Pincha en cada plan para ver todo lo que incluye.</p>
+    </div>
+    <div class="grid-apl" id="aplGrid"></div>
+    <p class="no-perm">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6 9.5 15 6 11.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Todos los planes son sin permanencia.
+    </p>
+  </div>
+</section>
+
 <!-- ============ FAQ (AEO/GEO) ============ -->
 <section id="faq" class="block">
   <div class="wrap">
@@ -1308,7 +1388,72 @@ const PLANS = [
     cta:'Quiero WhiteMoon 360'
   }
 ];
-const MARQUEE_WORDS = ['Atención 24/7','Captación','Reservas','RAG','CRM','WhatsApp','SEO · GEO · AEO','Agentes IA','Ficha Google','Procesos internos','Sin permanencia','Hecho a medida'];
+
+/* Planes de Automatización. 'orionInfo' es lo que cuenta Orion al pinchar el
+   CTA: sin registrarlos, serviceInfo() no los encuentra, cae a fallback() y el
+   lead se queda SIN saber que plan pidieron (state.lead.service vacio). */
+const PLANS_AUTO = [
+  {
+    service:'auto-basic', name:'Basic Esencial', photo:'basic',
+    alt:'Interior de una barbería de barrio con sus sillones',
+    price:'2.499€', unit:'setup · +199€/mes', note:'Sin permanencia',
+    ideal:'Autónomos y negocios locales que quieren automatizar un solo proceso — clínicas y consultas individuales, peluquerías y estética, talleres, gestorías pequeñas, abogados y psicólogos, tiendas locales.',
+    items:[
+      '1 automatización a elegir (captación de leads · presupuestos · gestión documental · seguimiento)',
+      'Integración con 1 canal (WhatsApp o email)',
+      'Notificaciones automáticas a tu WhatsApp',
+      'Panel de control con el estado de cada operación',
+      'Hasta 500 operaciones/mes',
+      'Puesta en marcha en 2-3 semanas',
+      'Soporte por email'
+    ],
+    cta:'Lo quiero',
+    orionInfo:'Basic Esencial son 2.499€ de setup + 199€/mes, sin permanencia. Automatizamos un proceso a elegir (captación de leads, presupuestos, gestión documental o seguimiento) con integración a un canal, avisos a tu WhatsApp y panel de control, hasta 500 operaciones al mes. Operativo en 2-3 semanas. Es el plan para autónomos y negocios locales.'
+  },
+  {
+    service:'auto-pro', name:'Pro Esencial', photo:'pro', feat:true, tag:'El más elegido',
+    alt:'Equipo comercial trabajando junto en una oficina diáfana',
+    price:'5.999€', unit:'setup · +349€/mes', note:'Sin permanencia',
+    ideal:'Pymes con equipo comercial y varios procesos que automatizar — reformas, inmobiliarias, energía solar, asesorías medianas, concesionarios, seguros, clínicas con varias sedes.',
+    items:[
+      'Todo lo de Basic, y además:',
+      'Hasta 3 automatizaciones combinadas',
+      'Integración CRM + WhatsApp + email',
+      'Cualificación y scoring de leads con IA',
+      'Seguimiento automático (recordatorios y reactivación)',
+      'Generación de documentos/PDF con tu marca',
+      'Panel con métricas y ROI en tiempo real',
+      'Hasta 2.000 operaciones/mes',
+      'Puesta en marcha en 3-4 semanas',
+      'Soporte prioritario'
+    ],
+    cta:'Lo quiero',
+    orionInfo:'Pro Esencial son 5.999€ de setup + 349€/mes, sin permanencia. Incluye todo lo de Basic y añade hasta 3 automatizaciones combinadas, integración con CRM + WhatsApp + email, cualificación y scoring de leads con IA, seguimiento automático, generación de documentos con tu marca y panel de métricas y ROI en tiempo real, hasta 2.000 operaciones al mes. Operativo en 3-4 semanas, con soporte prioritario. Es el más elegido por pymes con equipo comercial.'
+  },
+  {
+    service:'auto-enterprise', name:'Enterprise Esencial', photo:'enterprise',
+    alt:'Pasillo de un almacén logístico con estanterías de gran altura',
+    price:'desde 11.999€', unit:'+ 599€/mes · a presupuesto', note:'Sin permanencia',
+    ideal:'Empresas con sistemas propios y gran volumen — constructoras, logística y distribución, franquicias y multi-sede, industria, grandes despachos.',
+    items:[
+      'Todo lo de Pro, y además:',
+      'Automatizaciones ilimitadas y flujos a medida',
+      'Integración con tu ERP/software propio vía API',
+      'Agente IA entrenado con tus documentos (RAG)',
+      'Flujos multi-departamento',
+      'Volumen ilimitado',
+      'Consultor asignado + SLA de soporte',
+      'Alcance y precio tras auditoría'
+    ],
+    cta:'Lo quiero',
+    orionInfo:'Enterprise Esencial arranca desde 11.999€ + 599€/mes y se cierra a presupuesto, sin permanencia. Incluye todo lo de Pro y añade automatizaciones ilimitadas y flujos a medida, integración con tu ERP o software propio vía API, un agente IA entrenado con tus documentos (RAG), flujos multi-departamento, volumen ilimitado y consultor asignado con SLA de soporte. El alcance y el precio se cierran tras una auditoría.'
+  }
+];
+/* despues de PLANS_AUTO a proposito: con const, declararlo antes lanza
+   ReferenceError (temporal dead zone) y tumba todo el JS de la pagina */
+const PLAN_AUTO_MAP = Object.fromEntries(PLANS_AUTO.map(p=>[p.service,{key:p.service,title:p.name,info:p.orionInfo}]));
+
+const MARQUEE_WORDS =['Atención 24/7','Captación','Reservas','RAG','CRM','WhatsApp','SEO · GEO · AEO','Agentes IA','Ficha Google','Procesos internos','Sin permanencia','Hecho a medida'];
 
 /* ---------- YEAR ---------- */
 $('#yr').textContent = new Date().getFullYear();
@@ -1430,6 +1575,51 @@ const BRANDS = [
         <button class="btn ${p.feat?'btn-primary':'btn-ghost'}" data-orion data-service="${p.service}">${p.cta} ${ICON.arrow}</button>
       </div>
     </div>`).join('');
+})();
+
+/* ---------- RENDER: planes de automatización (acordeón) ---------- */
+(function(){
+  const chevron = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  $('#aplGrid').innerHTML = PLANS_AUTO.map(p=>`
+    <article class="apl ${p.feat?'feat':''}" data-reveal data-key="${p.service}">
+      ${p.tag?`<span class="tag">${p.tag}</span>`:''}
+      <button class="apl-head" type="button" aria-expanded="false" aria-controls="aplp-${p.service}" id="aplb-${p.service}">
+        <span class="apl-media">
+          <img src="assets/apl-${p.photo}.webp" alt="${p.alt}" width="800" height="450" loading="lazy" decoding="async">
+        </span>
+        <span class="apl-body">
+          <span class="apl-eyebrow">${p.name}</span>
+          <span class="apl-price">${p.price}</span>
+          <span class="apl-unit">${p.unit}</span>
+          <span class="apl-note">${p.note}</span>
+          <span class="apl-ideal"><b>Ideal para:</b> ${p.ideal}</span>
+          <span class="apl-hint">Ver más ${chevron}</span>
+        </span>
+      </button>
+      <div class="apl-panel" id="aplp-${p.service}" role="region" aria-labelledby="aplb-${p.service}">
+        <div class="apl-panel-in"><div class="apl-panel-c">
+          <ul>${p.items.map(i=>`<li class="${/^Todo lo de/.test(i)?'li-head':''}">${ICON.check}${i}</li>`).join('')}</ul>
+        </div></div>
+      </div>
+      <div class="apl-foot">
+        <button class="btn ${p.feat?'btn-primary':'btn-ghost'}" data-orion data-service="${p.service}">${p.cta} ${ICON.arrow}</button>
+      </div>
+    </article>`).join('');
+
+  // acordeon: solo una abierta a la vez
+  const cards = $$('#aplGrid .apl');
+  function setOpen(c,open){
+    c.classList.toggle('open',open);
+    c.querySelector('.apl-head').setAttribute('aria-expanded',open);
+    c.querySelector('.apl-hint').firstChild.textContent = open?'Ver menos ':'Ver más ';
+  }
+  cards.forEach(c=>{
+    c.querySelector('.apl-head').addEventListener('click',()=>{
+      const abrir = !c.classList.contains('open');
+      cards.forEach(o=>{ if(o!==c) setOpen(o,false); });
+      setOpen(c,abrir);
+    });
+  });
 })();
 
 /* ---------- NAV scrolled ---------- */
@@ -1672,7 +1862,7 @@ if(!REDUCED && window.gsap){
 
   // SERVICE_INFO block
   async function serviceInfo(key){
-    const svc = key==='wm360'?WM360:AUTO_MAP[key];
+    const svc = key==='wm360'?WM360:(AUTO_MAP[key]||PLAN_AUTO_MAP[key]);
     if(!svc){ return fallback(); }
     state.lead.service=svc.key; state.lead.interes=svc.title;
     addMsg(svc.title,'user');
