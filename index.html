@@ -464,8 +464,28 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
 
 /* ============ MANIFIESTO / FILOSOFÍA ============ */
 .manifesto{margin-top:clamp(18px,3vw,34px)}
-.mf-item{padding:clamp(26px,3.6vw,44px) 0;border-top:1px solid var(--border)}
+/* minmax(0,..) y no 1fr: "1fr" es minmax(auto,1fr) y su minimo auto no baja del
+   min-content de la columna (aqui .mf-key va con nowrap) -> desbordaria */
+.mf-item{
+  display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);
+  gap:clamp(22px,3.6vw,54px);align-items:center;
+  padding:clamp(26px,3.6vw,44px) 0;border-top:1px solid var(--border);
+}
 .mf-item:last-of-type{border-bottom:1px solid var(--border)}
+/* ritmo: foto derecha / izquierda / derecha */
+.mf-item:nth-of-type(2) .mf-media{order:-1}
+.mf-media{
+  position:relative;margin:0;border-radius:20px;overflow:hidden;
+  border:1px solid var(--border);aspect-ratio:16/11;
+}
+.mf-media img{width:100%;height:100%;object-fit:cover;display:block}
+/* tinte purpura: integra la foto en el look dark sin aplanarla */
+.mf-media::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(155deg,rgba(124,77,255,.44) 0%,rgba(124,77,255,.10) 52%,rgba(0,212,170,.12) 100%),
+    linear-gradient(0deg,rgba(8,8,13,.52) 0%,rgba(8,8,13,.06) 60%);
+}
 .mf-claim{font-size:clamp(1.55rem,3.9vw,2.7rem);line-height:1.14;letter-spacing:-.02em;margin:0 0 .85rem}
 /* dos tiempos: primero la negacion en muted y ligera, luego la afirmacion */
 .mf-t1{display:block;color:var(--muted);font-weight:300}
@@ -495,6 +515,13 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
   line-height:1.22;letter-spacing:-.02em;max-width:24ch;margin:0 auto 1.7rem;
 }
 .mf-cta{position:relative;z-index:1}
+/* 1 columna con la foto arriba: a 2 columnas por debajo de 900 el texto se
+   estrecha demasiado y las frases pierden fuerza */
+@media (max-width:900px){
+  .mf-item{grid-template-columns:minmax(0,1fr);gap:20px}
+  .mf-item .mf-media,.mf-item:nth-of-type(2) .mf-media{order:-1}
+  .mf-media{aspect-ratio:16/9}
+}
 @media (max-width:600px){
   .mf-claim{margin-bottom:.7rem}
   .mf-close-line{max-width:18ch}
@@ -891,27 +918,48 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
 
     <div class="manifesto">
       <article class="mf-item" data-reveal>
-        <p class="mf-claim">
-          <span class="mf-t1">Las empresas no compran productos.</span>
-          <span class="mf-t2">Compran <em class="mf-key">resultados</em>.</span>
-        </p>
-        <p class="mf-note">Por eso no te entregamos una herramienta, sino resultados: más clientes atendidos, más citas cerradas y horas que recuperas.</p>
+        <div class="mf-text">
+          <p class="mf-claim">
+            <span class="mf-t1">Las empresas no compran productos.</span>
+            <span class="mf-t2">Compran <em class="mf-key">resultados</em>.</span>
+          </p>
+          <p class="mf-note">Por eso no te entregamos una herramienta, sino resultados: más clientes atendidos, más citas cerradas y horas que recuperas.</p>
+        </div>
+        <figure class="mf-media">
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&auto=format&fit=crop"
+               alt="Panel de analítica con gráficas de resultados y métricas de negocio"
+               loading="lazy" decoding="async" width="800" height="570">
+        </figure>
       </article>
 
       <article class="mf-item" data-reveal>
-        <p class="mf-claim">
-          <span class="mf-t1">No compran servicios.</span>
-          <span class="mf-t2">Compran <em class="mf-key is-g">soluciones</em>.</span>
-        </p>
-        <p class="mf-note">No te vendemos un chatbot; resolvemos el problema real: que ningún cliente se quede sin respuesta, ni de día ni de noche.</p>
+        <div class="mf-text">
+          <p class="mf-claim">
+            <span class="mf-t1">No compran servicios.</span>
+            <span class="mf-t2">Compran <em class="mf-key is-g">soluciones</em>.</span>
+          </p>
+          <p class="mf-note">No te vendemos un chatbot; resolvemos el problema real: que ningún cliente se quede sin respuesta, ni de día ni de noche.</p>
+        </div>
+        <figure class="mf-media">
+          <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80&auto=format&fit=crop"
+               alt="La Tierra de noche con redes de luces conectadas entre ciudades"
+               loading="lazy" decoding="async" width="800" height="532">
+        </figure>
       </article>
 
       <article class="mf-item" data-reveal>
-        <p class="mf-claim">
-          <span class="mf-t1">No compran características.</span>
-          <span class="mf-t2">Compran <em class="mf-key">transformación</em>.</span>
-        </p>
-        <p class="mf-note">No te listamos funciones; transformamos cómo trabaja tu empresa: la IA hace lo repetitivo y tu equipo, lo que de verdad suma.</p>
+        <div class="mf-text">
+          <p class="mf-claim">
+            <span class="mf-t1">No compran características.</span>
+            <span class="mf-t2">Compran <em class="mf-key">transformación</em>.</span>
+          </p>
+          <p class="mf-note">No te listamos funciones; transformamos cómo trabaja tu empresa: la IA hace lo repetitivo y tu equipo, lo que de verdad suma.</p>
+        </div>
+        <figure class="mf-media">
+          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80&auto=format&fit=crop"
+               alt="Mesa de trabajo vista desde arriba con portátiles y dispositivos de un equipo"
+               loading="lazy" decoding="async" width="800" height="533">
+        </figure>
       </article>
     </div>
 
