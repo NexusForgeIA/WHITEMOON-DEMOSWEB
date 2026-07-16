@@ -423,44 +423,76 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
   .flow-pulse{animation:none;stroke-dashoffset:0;stroke-dasharray:none;opacity:.7}
 }
 
-/* ============ FLIP CARDS ============ */
-.grid-auto{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
-.flip{perspective:1400px;min-height:270px}
-.flip-inner{position:relative;width:100%;height:100%;min-height:270px;transition:transform .8s var(--ease);transform-style:preserve-3d}
-/* el giro por hover solo en punteros reales: en táctil (iOS) el :hover se
-   queda pegado tras el tap y la card no volvía al frente al segundo toque.
-   El tap-to-flip vive en JS bajo (hover:none), así que ambos caminos son
-   complementarios y no se solapan. */
-@media (hover:hover){
-  .flip:hover .flip-inner{transform:rotateY(180deg)}
+/* ============ SERVICIOS (cards acordeón) ============ */
+.grid-auto{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+.svc{
+  display:flex;flex-direction:column;border-radius:20px;overflow:hidden;
+  border:1px solid var(--border);background:var(--card);
+  transition:border-color .3s var(--ease),transform .3s var(--ease);
 }
-.flip.flipped .flip-inner{transform:rotateY(180deg)}
-.flip-face{position:absolute;inset:0;border-radius:20px;padding:28px;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--border);background:var(--card);display:flex;flex-direction:column;overflow:hidden}
-.flip-front{justify-content:space-between}
-.card-media{position:absolute;inset:0;z-index:0;overflow:hidden;border-radius:20px}
-.card-media img{width:100%;height:100%;object-fit:cover;display:block}
-.card-media::after{content:'';position:absolute;inset:0;pointer-events:none;
+.svc.open{border-color:var(--p)}
+@media (hover:hover){.svc:hover{border-color:rgba(124,77,255,.45)}}
+
+/* cabecera = boton accesible: toda la zona colapsada es clicable */
+.svc-head{
+  all:unset;box-sizing:border-box;display:flex;flex-direction:column;
+  cursor:pointer;width:100%;flex:1;
+}
+.svc-head:focus-visible{outline:2px solid var(--p2);outline-offset:-3px;border-radius:20px}
+
+.svc-media{position:relative;display:block;aspect-ratio:16/9;overflow:hidden;flex:none}
+.svc-media img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:grayscale(1);transform:scale(1.02);
+  transition:filter .3s var(--ease),transform .3s var(--ease);
+}
+/* duotono purpura: integra la foto en el dark sin aplanarla */
+.svc-media::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
   background:
-    linear-gradient(180deg,rgba(8,8,13,.30) 0%,rgba(8,8,13,.48) 42%,rgba(8,8,13,.92) 100%),
-    linear-gradient(150deg,rgba(124,77,255,.62) 0%,rgba(124,77,255,.18) 42%,rgba(8,8,13,.25) 100%);}
-.flip-front::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(300px 160px at 100% 0%,rgba(124,77,255,.18),transparent 60%)}
-.flip-front .flip-ico,.flip-front .fc-text{position:relative;z-index:2}
-/* sin backdrop-filter: dentro de un preserve-3d aplana el contexto 3D
-   (Safari lo hace de forma agresiva) y backface-visibility deja de ocultar
-   la cara frontal, que se cuela en espejo. Compensado con fondo más opaco. */
-.flip-ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;border:1px solid rgba(124,77,255,.45);background:rgba(12,12,20,.72)}
-.flip-ico svg{width:26px;height:26px;color:var(--p2)}
-.flip-front h3{font-size:1.22rem;margin-top:auto;text-shadow:0 2px 14px rgba(0,0,0,.75)}
-.flip-front .hint{color:rgba(240,240,245,.8);font-size:.82rem;margin-top:.5rem;display:flex;align-items:center;gap:.4em;text-shadow:0 1px 8px rgba(0,0,0,.6)}
-.flip-front .hint svg{width:14px;height:14px;color:var(--g)}
-.flip-back{transform:rotateY(180deg);justify-content:space-between;background:linear-gradient(160deg,rgba(124,77,255,.12),var(--card));border-color:var(--border-g)}
-.flip-back h4{font-size:1.05rem;margin-bottom:.5rem;color:var(--p2)}
-.flip-back p{color:var(--muted);font-size:.92rem;line-height:1.55}
-.flip-back .btn{margin-top:16px;align-self:flex-start;font-size:.86rem;padding:.7em 1.15em}
-/* will-change:transform sobre el ancestro aplana el contexto 3D en Safari
-   (y con él backface-visibility). Las flip-cards no lo necesitan: su giro
-   ya está compuesto en la GPU vía .flip-inner. */
-.flip[data-reveal]{will-change:auto}
+    linear-gradient(150deg,rgba(124,77,255,.58) 0%,rgba(124,77,255,.16) 55%,rgba(0,212,170,.12) 100%),
+    linear-gradient(0deg,rgba(8,8,13,.72) 0%,rgba(8,8,13,.05) 62%);
+}
+@media (hover:hover){
+  .svc:hover .svc-media img,.svc.open .svc-media img{filter:grayscale(0);transform:scale(1.06)}
+}
+.svc.open .svc-media img{filter:grayscale(0)}
+
+/* cuerpo: flex:1 deja la pista "ver mas" pegada abajo en todas por igual */
+.svc-body{display:flex;align-items:flex-start;gap:12px;padding:18px;flex:1}
+.svc-ico{
+  width:42px;height:42px;flex:none;border-radius:12px;display:grid;place-items:center;
+  border:1px solid rgba(124,77,255,.45);background:rgba(124,77,255,.08);color:var(--p2);
+}
+.svc-ico svg{width:21px;height:21px}
+.svc-txt{display:flex;flex-direction:column;flex:1;min-width:0}
+/* min-height de 2 lineas: todas las colapsadas miden EXACTAMENTE lo mismo
+   aunque el titulo ocupe 1 o 2 lineas */
+.svc-title{font-size:1.02rem;font-weight:700;line-height:1.25;min-height:2.5em;letter-spacing:-.01em}
+.svc-hint{
+  margin-top:auto;display:inline-flex;align-items:center;gap:.4em;
+  color:var(--muted);font-size:.8rem;font-weight:500;
+}
+.svc-hint svg{width:14px;height:14px;color:var(--g);transition:transform .3s var(--ease)}
+.svc.open .svc-hint svg{transform:rotate(180deg)}
+
+/* el panel: grid-template-rows 0fr -> 1fr anima la altura sin medir en JS */
+.svc-panel{display:grid;grid-template-rows:0fr;transition:grid-template-rows .38s var(--ease)}
+.svc.open .svc-panel{grid-template-rows:1fr}
+.svc-panel-in{overflow:hidden;min-height:0}
+.svc-panel-c{padding:0 18px 18px;border-top:1px solid transparent}
+.svc.open .svc-panel-c{border-top-color:var(--border)}
+.svc-panel-c p{color:var(--muted);font-size:.92rem;line-height:1.6;margin:14px 0 0}
+.svc-panel-c .btn{margin-top:16px;font-size:.86rem;padding:.7em 1.15em}
+/* medido: solo por debajo de 330px el titulo mas largo ("Base de conocimiento
+   IA (RAG)") se va a 3 lineas y rompe la igualdad de altura. Se reserva la
+   tercera linea solo ahi, para no meter hueco muerto en el resto de anchos. */
+@media (max-width:329px){.svc-title{min-height:3.75em}}
+@media (prefers-reduced-motion:reduce){
+  .svc-panel{transition:none}
+  .svc-media img{transition:none;transform:none}
+  .svc-hint svg{transition:none}
+}
 
 /* ============ MANIFIESTO / FILOSOFÍA ============ */
 .manifesto{margin-top:clamp(18px,3vw,34px)}
@@ -902,7 +934,7 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
     <div class="head-row" data-reveal>
       <span class="eyebrow">Automatizaciones</span>
       <h2 class="sec-title">Automatizaciones con IA para tu <span class="grad-text">empresa</span></h2>
-      <p class="sec-lead">Pasa el ratón (o toca en móvil) sobre cada tarjeta para ver cómo funciona y cómo se aplica a tu negocio.</p>
+      <p class="sec-lead">Pincha en cada tarjeta para ver cómo funciona y cómo se aplica a tu negocio.</p>
     </div>
     <div class="grid-auto" id="autoGrid"></div>
   </div>
@@ -1166,8 +1198,7 @@ const ICON = {
   wm360:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18" stroke-linecap="round"/><circle cx="12" cy="12" r="2.6"/></svg>',
   spark:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3v5m0 8v5m9-9h-5M8 12H3m13.5-6.5-3.5 3.5m-2 2-3.5 3.5m11 0-3.5-3.5m-2-2L7.5 5.5" stroke-linecap="round"/></svg>',
   check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5 10 17 19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  flip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 8a8 8 0 0 1 14-5M20 16a8 8 0 0 1-14 5" stroke-linecap="round"/><path d="M18 3v4h-4M6 21v-4h4" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+  arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 };
 
 /* ---------- CANONICAL AUTOMATION DATA (shared: cards + chatbot) ---------- */
@@ -1277,30 +1308,46 @@ const BRANDS = [
   });
 })();
 
-/* ---------- RENDER: automation flip cards ---------- */
+/* ---------- RENDER: servicios (cards acordeón) ---------- */
 (function(){
+  const chevron = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   $('#autoGrid').innerHTML = AUTOS.map(a=>`
-    <article class="flip" data-reveal tabindex="0" data-key="${a.key}">
-      <div class="flip-inner">
-        <div class="flip-face flip-front">
-          <div class="card-media">
-            <img src="https://images.unsplash.com/${a.photo}${PHOTO_Q}" alt="${a.alt}" loading="lazy" width="600" height="400">
-          </div>
-          <div class="flip-ico">${ICON[a.key]}</div>
-          <div class="fc-text">
-            <h3>${a.title}</h3>
-            <div class="hint">${ICON.flip} ${a.short}</div>
-          </div>
-        </div>
-        <div class="flip-face flip-back">
-          <div>
-            <h4>${a.title}</h4>
-            <p>${a.info}</p>
-          </div>
+    <article class="svc" data-reveal data-key="${a.key}">
+      <button class="svc-head" type="button" aria-expanded="false" aria-controls="svcp-${a.key}" id="svcb-${a.key}">
+        <span class="svc-media">
+          <img src="assets/svc-${a.key}.webp" alt="${a.alt}" width="800" height="450" loading="lazy" decoding="async">
+        </span>
+        <span class="svc-body">
+          <span class="svc-ico">${ICON[a.key]}</span>
+          <span class="svc-txt">
+            <span class="svc-title">${a.title}</span>
+            <span class="svc-hint">Ver más ${chevron}</span>
+          </span>
+        </span>
+      </button>
+      <div class="svc-panel" id="svcp-${a.key}" role="region" aria-labelledby="svcb-${a.key}">
+        <div class="svc-panel-in"><div class="svc-panel-c">
+          <p>${a.info}</p>
           <button class="btn btn-g" data-orion data-service="${a.key}">Hablar con Orion ${ICON.arrow}</button>
-        </div>
+        </div></div>
       </div>
     </article>`).join('');
+
+  // acordeon: solo una abierta a la vez para que el layout no salte
+  const cards = $$('#autoGrid .svc');
+  function setOpen(card, open){
+    card.classList.toggle('open', open);
+    card.querySelector('.svc-head').setAttribute('aria-expanded', open);
+    card.querySelector('.svc-hint').firstChild.textContent = open ? 'Ver menos ' : 'Ver más ';
+  }
+  cards.forEach(card=>{
+    card.querySelector('.svc-head').addEventListener('click',()=>{
+      const abrir = !card.classList.contains('open');
+      cards.forEach(c=>{ if(c!==card) setOpen(c,false); });
+      setOpen(card, abrir);
+    });
+  });
+  // <button> ya trae Enter/Espacio y foco de serie: no hace falta JS de teclado
 })();
 
 /* ---------- RENDER: steps (horizontal) ---------- */
@@ -1437,17 +1484,6 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape'){toggleMenu(false);
   }
   const io=new IntersectionObserver((e)=>{ if(e[0].isIntersecting){ ('requestIdleCallback'in window?requestIdleCallback(load,{timeout:1200}):setTimeout(load,300)); io.disconnect(); }},{rootMargin:'0px'});
   io.observe($('#hero'));
-})();
-
-/* ---------- FLIP CARDS: tap-to-flip on touch ---------- */
-(function(){
-  if(!window.matchMedia('(hover: none)').matches) return;
-  $$('.flip').forEach(card=>{
-    card.addEventListener('click',(e)=>{
-      if(e.target.closest('[data-orion]')) return; // let CTA work
-      card.classList.toggle('flipped');
-    });
-  });
 })();
 
 /* ---------- GSAP SCROLL ---------- */
