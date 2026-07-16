@@ -1,0 +1,33 @@
+# WhiteMoon — Automatización con IA para empresas
+
+> WhiteMoon es una agencia de automatización con inteligencia artificial para empresas y pymes en España (Majadahonda, Madrid). Diseña, implementa y da soporte a agentes de IA, chatbots de captación de leads, CRM con IA y automatización de procesos. Todos los servicios son sin permanencia.
+
+## Qué automatiza WhiteMoon
+- Auditoría IA: análisis de la empresa para priorizar qué procesos automatizar primero.
+- Agente de IA de atención al cliente 24/7 (chatbot web): atiende, cualifica y agenda citas y reservas.
+- Captación de leads automática: cada contacto entra en el CRM y llega al WhatsApp del equipo en segundos.
+- CRM con IA para gestionar avisos, citas y clientes desde un panel propio.
+- Automatización de procesos de empresa y de procesos internos: tareas, avisos, documentos, reporting y coordinación.
+- Base de conocimiento IA (RAG): el agente responde con los documentos, precios y procesos reales del cliente.
+- Automatización de la ficha de Google Business (GMB) y SEO local.
+- Visibilidad en IA (SEO para IA / GEO / AEO): aparecer y ser recomendado en ChatGPT, Perplexity, Google AI y Grok.
+- Integraciones y flujos a medida entre las herramientas del negocio.
+- Automatización de WhatsApp para empresas.
+
+## WhiteMoon 360
+WhiteMoon 360 es la automatización integral de la empresa: une web, agente de IA de chat y CRM con IA en un único sistema conectado. La web capta el aviso o la cita, el agente de IA lo clasifica, el equipo lo recibe por WhatsApp y el negocio lo gestiona todo desde su propio panel. Suele estar operativo en unos 7 días y no tiene permanencia.
+
+## Planes (sin permanencia)
+- Auditoría IA — 899 € (pago único).
+- WhiteMoon 360 — 1.899 € de setup + 199 €/mes (web + agente IA + gestión).
+- Automatización de ficha GMB — 299 € de setup.
+
+## Para quién
+Empresas y pymes de cualquier sector que quieren automatizar atención al cliente, captación de leads, reservas, procesos internos y visibilidad en buscadores e IA.
+
+## Contacto
+- Sitio web: https://whitemoon.es
+- Landing: https://nexusforgeia.github.io/WHITEMOON-DEMOSWEB/
+- Email: comercial@whitemoon.es
+- WhatsApp: +34 643 199 580
+- Ubicación: Majadahonda, Madrid (España)
