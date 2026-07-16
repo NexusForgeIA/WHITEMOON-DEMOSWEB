@@ -533,6 +533,12 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
 .contact-list li .mk svg{width:20px;height:20px}
 .contact-list li span{color:var(--muted);font-size:.8rem;display:block}
 .contact-list li a,.contact-list li b{font-weight:600;font-size:1rem}
+/* el email es una palabra irrompible: sin esto impone un min-content de 257px
+   que arrastra a toda la tarjeta y desborda el viewport en movil. "anywhere"
+   (a diferencia de break-word) SI reduce el min-content, y solo parte la
+   palabra cuando de verdad no cabe. */
+.contact-list li a,.contact-list li b{overflow-wrap:anywhere}
+.contact-list li>div{min-width:0}
 .contact-list li a:hover{color:var(--g)}
 .foot-bottom{border-top:1px solid var(--border);margin-top:60px;padding:26px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;color:var(--muted);font-size:.84rem}
 /* redes: mismo lenguaje que los chips .mk de la tarjeta de contacto */
@@ -638,9 +644,15 @@ body.orion-open .orion-win{opacity:1;visibility:visible;transform:translateY(0) 
   .porque-grid{grid-template-columns:1fr;gap:30px}
   .porque-stage{min-height:auto;padding:20px 0}
   .grid-plans{grid-template-columns:1fr;gap:26px;max-width:520px;margin:0 auto}
-  .contact-grid{grid-template-columns:1fr;gap:30px}
+  /* minmax(0,1fr): "1fr" es minmax(auto,1fr) y su minimo auto impide que la
+     columna baje del min-content de la tarjeta -> desbordaba el viewport */
+  .contact-grid{grid-template-columns:minmax(0,1fr);gap:30px}
 }
 @media (max-width:600px){
+  /* 36px de padding a cada lado se comen el ancho util en pantallas estrechas.
+     Con esto el email entra en una linea a 360px sin partirse. */
+  .contact-card{padding:20px}
+  .contact-list li a,.contact-list li b{font-size:.94rem}
   .nav{padding:12px 20px}
   .brand span{font-size:1rem}
   .grid-auto{grid-template-columns:1fr}
