@@ -397,7 +397,10 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
     linear-gradient(150deg,rgba(124,77,255,.62) 0%,rgba(124,77,255,.18) 42%,rgba(8,8,13,.25) 100%);}
 .flip-front::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;background:radial-gradient(300px 160px at 100% 0%,rgba(124,77,255,.18),transparent 60%)}
 .flip-front .flip-ico,.flip-front .fc-text{position:relative;z-index:2}
-.flip-ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;border:1px solid rgba(124,77,255,.45);background:rgba(12,12,20,.5);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+/* sin backdrop-filter: dentro de un preserve-3d aplana el contexto 3D
+   (Safari lo hace de forma agresiva) y backface-visibility deja de ocultar
+   la cara frontal, que se cuela en espejo. Compensado con fondo más opaco. */
+.flip-ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;border:1px solid rgba(124,77,255,.45);background:rgba(12,12,20,.72)}
 .flip-ico svg{width:26px;height:26px;color:var(--p2)}
 .flip-front h3{font-size:1.22rem;margin-top:auto;text-shadow:0 2px 14px rgba(0,0,0,.75)}
 .flip-front .hint{color:rgba(240,240,245,.8);font-size:.82rem;margin-top:.5rem;display:flex;align-items:center;gap:.4em;text-shadow:0 1px 8px rgba(0,0,0,.6)}
@@ -406,6 +409,10 @@ body.menu-open .overlay-cta-wrap{animation:ovIn .7s var(--ease) .43s forwards}
 .flip-back h4{font-size:1.05rem;margin-bottom:.5rem;color:var(--p2)}
 .flip-back p{color:var(--muted);font-size:.92rem;line-height:1.55}
 .flip-back .btn{margin-top:16px;align-self:flex-start;font-size:.86rem;padding:.7em 1.15em}
+/* will-change:transform sobre el ancestro aplana el contexto 3D en Safari
+   (y con él backface-visibility). Las flip-cards no lo necesitan: su giro
+   ya está compuesto en la GPU vía .flip-inner. */
+.flip[data-reveal]{will-change:auto}
 
 /* ============ HORIZONTAL SCROLL (Cómo trabajamos) ============ */
 #como{overflow:hidden}
